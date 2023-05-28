@@ -10,7 +10,6 @@ const PhotoContainer = ({ setPage, loading, images }) => {
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
       setIsFetchingImages(true);
-      // console.log("you've scrolled");
       return;
     }
     setIsFetchingImages(false);
