@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Photo from "./Photo";
 import PhotoContainer from "./PhotoContainer";
 function App() {
   const [images, setImages] = useState([]);
@@ -34,27 +33,19 @@ function App() {
     console.log(images);
   }, [page]);
 
-  const options = {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.5,
-  };
-
-  if (loading) {
-    return (
-      <section className="w-full h-screen flex items-center justify-center">
-        <div className="spinner"></div>
-      </section>
-    );
-  }
   if (error) {
     return <h2>There was an error...</h2>;
   }
 
   return (
     <main>
-      <h4>unsplash api infinite scroll</h4>
-      <PhotoContainer page={page} setPage={setPage} images={images} />
+      <h2 className="text-3xl capitalize text-center bg-fuchsia-300 p-6 font-semibold font-mono">
+        unsplash api infinite scroll
+      </h2>
+      <PhotoContainer setPage={setPage} loading={loading} images={images} />
+      {loading && (
+        <h2 className="text-center text-lg font-semibold">Loading...</h2>
+      )}
     </main>
   );
 }

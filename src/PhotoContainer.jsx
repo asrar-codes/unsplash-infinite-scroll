@@ -1,38 +1,36 @@
-import React, { useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Photo from "./Photo";
 
-const PhotoContainer = ({ setPage, images }) => {
+const PhotoContainer = ({ setPage, loading, images }) => {
+  const [fetchingImages, setIsFetchingImages] = useState(false);
+
   const imagesArr = Array.from(images.values());
   // console.log(imagesArr);
-  const photoRef = useRef(null);
-  const handleScroll = () => {
-    // if (scrollY > photoRef.current.getBoundingClientRect().bottom + 100) {
-    //   console.log(photoRef.current.getBoundingClientRect());
-    //   photoRef.current.style.border = "2px solid red";
-    // }
-    // console.log(scrollY);
 
-    if (window.innerHeight + window.screenY >= document.body.scrollHeight - 2) {
-      setPage((page) => page + 1);
+  const handleScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+      setIsFetchingImages(true);
+      // console.log("you've scrolled");
       return;
     }
-
-    // console.log(window.innerHeight);
-    // console.log(window.scrollY);
-    // console.log(photoRef.current.getBoundingClientRect().bottom);
-
-    console.log(document.body.offsetHeight);
+    setIsFetchingImages(false);
+    return;
   };
   useEffect(() => {
-    handleScroll();
+    if (!fetchingImages) return;
+    if (loading) return;
+    setPage((page) => page + 1);
+  }, [fetchingImages]);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <section className="photo" ref={photoRef}>
+    <section className="photo">
       {imagesArr.map((item) => {
-        {
-          /* console.log(item); */
-        }
         return <Photo key={item.id} {...item} />;
       })}
     </section>
