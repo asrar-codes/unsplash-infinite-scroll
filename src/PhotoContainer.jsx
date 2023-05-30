@@ -4,7 +4,7 @@ import Photo from "./Photo";
 const PhotoContainer = ({ setPage, loading, images }) => {
   const [fetchingImages, setIsFetchingImages] = useState(false);
 
-  const imagesArr = Array.from(images.values());
+  const imagesArr = Array.from(images?.values());
   // console.log(imagesArr);
 
   const handleScroll = () => {
@@ -29,6 +29,11 @@ const PhotoContainer = ({ setPage, loading, images }) => {
 
   return (
     <section className="photo">
+      {!loading && imagesArr.length < 1 && (
+        <h2 className="text-center text-2xl capitalize">
+          no results were found...
+        </h2>
+      )}
       {imagesArr.map((item) => {
         return <Photo key={item.id} {...item} />;
       })}
